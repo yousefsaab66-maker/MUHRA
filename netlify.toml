@@ -1,0 +1,28 @@
+# https://docs.netlify.com/integrations/frameworks/next-js/overview/
+# رفع المشروع: اربط الريبو في Netlify واترك الإعداد الافتراضي (يُقرأ هذا الملف تلقائياً).
+
+[build]
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NPM_CONFIG_FUND = "false"
+  NPM_CONFIG_AUDIT = "false"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Netlify Image CDN — allowed remote hosts (matches next.config remotePatterns)
+[images]
+  remote_images = [
+    "https://images.unsplash.com/.*",
+    "https://plus.unsplash.com/.*",
+  ]
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

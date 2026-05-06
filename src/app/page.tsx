@@ -1,0 +1,312 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useMemo } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { Hero } from "@/components/Hero";
+import { ProductCard } from "@/components/ProductCard";
+import { SafeImage } from "@/components/SafeImage";
+import { FadeIn, SectionTitle } from "@/components/Section";
+import { useLocale } from "@/components/providers/LocaleProvider";
+import { useStore } from "@/components/providers/StoreProvider";
+
+const CATEGORIES: {
+  key: "necklaces" | "rings" | "earrings" | "bracelets";
+  image: string;
+}[] = [
+  { key: "necklaces", image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1200&q=80" },
+  { key: "rings", image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1200&q=80" },
+  { key: "earrings", image: "https://images.unsplash.com/photo-1635767798638-3e25273a8236?auto=format&fit=crop&w=1200&q=80" },
+  { key: "bracelets", image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=1200&q=80" },
+];
+
+export default function HomePage() {
+  const { t } = useLocale();
+  const { products, collections, journal } = useStore();
+  const reduce = useReducedMotion();
+
+  const iconic = useMemo(
+    () =>
+      products
+        .filter((p) => p.collection === "muhra-heritage" || p.isNew || p.isHighJewelry)
+        .slice(0, 6),
+    [products],
+  );
+  const featuredCollection = collections.find((c) => c.slug === "muhra-aurora") ?? collections[0];
+
+  return (
+    <div className="flex flex-col">
+      <Hero />
+
+      {/* Category strip */}
+      <section className="page-gutter py-20 md:py-28">
+        <FadeIn>
+          <p className="eyebrow text-center">{t("nav.collections")}</p>
+        </FadeIn>
+        <div className="mx-auto mt-8 grid max-w-[1400px] grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          {CATEGORIES.map((c, i) => (
+            <FadeIn key={c.key} delay={i * 0.08}>
+              <Link
+                href={`/products?category=${c.key}` as never}
+                className="product-image-zoom relative block aspect-[3/4] overflow-hidden"
+                style={{ background: "var(--surface-2)" }}
+              >
+                <Image
+                  src={c.image}
+                  alt={t(`category.${c.key}`)}
+                  fill
+                  sizes="(min-width: 768px) 25vw, 50vw"
+                  className="object-cover"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, transparent 50%, rgba(10,10,10,0.55) 100%)",
+                  }}
+                />
+                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-[var(--color-ivory)]">
+                  <h3 className="font-display text-2xl md:text-3xl" style={{ color: "var(--color-ivory)" }}>
+                    {t(`category.${c.key}`)}
+                  </h3>
+                  <ArrowUpRight className="h-5 w-5 opacity-80" strokeWidth={1.3} />
+                </div>
+              </Link>
+            </FadeIn>
+          ))}
+        </div>
+      </section>
+
+      <div className="divider-gold mx-auto my-10 w-[40%]" />
+
+      {/* Featured collection split */}
+      {featuredCollection && (
+        <section className="page-gutter py-20 md:py-28">
+          <div className="mx-auto grid max-w-[1400px] items-center gap-12 lg:grid-cols-2 lg:gap-20">
+            <FadeIn>
+              <div className="product-image-zoom relative aspect-[4/5] overflow-hidden" style={{ background: "var(--surface-2)" }}>
+                <SafeImage
+                  src={featuredCollection.editorialImage}
+                  alt={featuredCollection.name}
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            </FadeIn>
+            <FadeIn delay={0.15}>
+              <div>
+                <p className="eyebrow">{t("common.newCollection")}</p>
+                <h3 className="font-display mt-5 text-4xl leading-[1.05] md:text-6xl">
+                  {featuredCollection.name}
+                </h3>
+                <p className="mt-3 text-base italic opacity-75">{featuredCollection.tagline}</p>
+                <p className="mt-7 max-w-md text-base leading-relaxed opacity-85">
+                  {featuredCollection.description}
+                </p>
+                <div className="mt-10 flex flex-wrap items-center gap-4">
+                  <Link href={`/collections/${featuredCollection.slug}` as never} className="btn-primary">
+                    {t("common.explore")}
+                  </Link>
+                  <Link
+                    href={"/collections" as never}
+                    className="text-[11px] tracking-eyebrow uppercase gold-underline"
+                  >
+                    {t("common.viewAll")} →
+                  </Link>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+      )}
+
+      <div className="divider-gold mx-auto my-10 w-[40%]" />
+
+      {/* Iconic creations */}
+      <section className="page-gutter py-20 md:py-28">
+        <SectionTitle eyebrow={t("common.iconic")} title={t("common.iconic")} subtitle={t("hero.sub")} />
+        <FadeIn>
+          <div className="mx-auto mt-16 grid max-w-[1400px] grid-cols-2 gap-x-5 gap-y-14 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-8">
+            {iconic.slice(0, 8).map((p, i) => (
+              <ProductCard key={p.id} product={p} index={i} />
+            ))}
+          </div>
+        </FadeIn>
+        <div className="mt-14 flex justify-center">
+          <Link href={"/products" as never} className="btn-ghost">
+            {t("common.viewAll")} <ArrowRight className="h-4 w-4" strokeWidth={1.4} />
+          </Link>
+        </div>
+      </section>
+
+      {/* Maison story two column */}
+      <section className="page-gutter py-20 md:py-28" style={{ background: "var(--surface)" }}>
+        <div className="mx-auto grid max-w-[1400px] items-center gap-14 lg:grid-cols-2 lg:gap-24">
+          <FadeIn>
+            <div>
+              <p className="eyebrow">{t("common.maison")}</p>
+              <h3 className="font-display mt-5 text-4xl leading-[1.05] md:text-5xl">
+                {t("story.title")}
+              </h3>
+              <p className="mt-7 text-base leading-relaxed opacity-85">
+                {t("story.lede")}
+              </p>
+              <p className="mt-5 text-base leading-relaxed opacity-75">
+                {t("home.atelier.bodyExtra")}
+              </p>
+              <div className="mt-10">
+                <Link href={"/story" as never} className="btn-primary">
+                  {t("common.discover")}
+                </Link>
+              </div>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.15}>
+            <motion.div
+              className="relative aspect-[4/5]"
+              style={{ background: "var(--surface-2)" }}
+              initial={reduce ? false : { y: 30, opacity: 0 }}
+              whileInView={reduce ? undefined : { y: 0, opacity: 1 }}
+              viewport={{ once: true, margin: "-15% 0px" }}
+              transition={{ duration: 1.2, ease: [0.22, 0.61, 0.36, 1] }}
+            >
+              <Image
+                src="https://images.unsplash.com/photo-1622398925373-3f91b1e275f5?auto=format&fit=crop&w=1600&q=80"
+                alt={t("home.atelier.parisCaption")}
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.35) 100%)",
+                }}
+              />
+              <p className="absolute bottom-6 start-6 text-[11px] tracking-eyebrow uppercase" style={{ color: "var(--color-ivory)" }}>
+                {t("home.atelier.parisCaption")}
+              </p>
+            </motion.div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Journal teaser */}
+      <section className="page-gutter py-20 md:py-28">
+        <div className="mx-auto max-w-[1400px]">
+          <FadeIn>
+            <div className="flex items-end justify-between gap-6">
+              <div>
+                <p className="eyebrow">{t("nav.journal")}</p>
+                <h3 className="font-display mt-3 text-3xl md:text-4xl">{t("home.fromMaison")}</h3>
+              </div>
+              <Link href={"/journal" as never} className="text-[11px] tracking-eyebrow uppercase gold-underline">
+                {t("common.viewAll")} →
+              </Link>
+            </div>
+          </FadeIn>
+          <div className="mt-12 grid gap-10 md:grid-cols-3">
+            {journal.slice(0, 3).map((a, i) => (
+              <FadeIn key={a.id} delay={i * 0.08}>
+                <Link href={`/journal/${a.slug}` as never} className="group block">
+                  <div className="product-image-zoom relative aspect-[4/5] overflow-hidden" style={{ background: "var(--surface-2)" }}>
+                    <SafeImage src={a.image} alt={a.title} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
+                  </div>
+                  <p className="mt-5 text-[11px] tracking-eyebrow uppercase opacity-65">
+                    {a.category}
+                  </p>
+                  <h4 className="font-display mt-2 text-2xl gold-underline">{a.title}</h4>
+                  <p className="mt-3 text-sm leading-relaxed opacity-75">{a.excerpt}</p>
+                </Link>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Boutique teaser map-like */}
+      <section
+        className="relative overflow-hidden page-gutter py-24 md:py-36"
+        style={{ background: "var(--color-onyx)", color: "var(--color-ivory)" }}
+      >
+        <div
+          className="pointer-events-none absolute inset-0 opacity-25"
+          aria-hidden
+          style={{
+            backgroundImage: `radial-gradient(circle at 20% 30%, rgba(184,154,94,0.45), transparent 25%), radial-gradient(circle at 70% 60%, rgba(184,154,94,0.35), transparent 22%), radial-gradient(circle at 45% 80%, rgba(184,154,94,0.4), transparent 25%), radial-gradient(circle at 85% 25%, rgba(184,154,94,0.45), transparent 22%)`,
+            backgroundColor: "transparent",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-20"
+          aria-hidden
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(246,241,231,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(246,241,231,0.06) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+        <div className="relative mx-auto max-w-[1400px] text-center">
+          <p className="eyebrow" style={{ color: "var(--color-gold)" }}>
+            {t("common.boutiques")}
+          </p>
+          <h3 className="font-display mt-5 text-4xl leading-[1.05] md:text-6xl">
+            {t("home.boutiques.cities")}
+          </h3>
+          <p className="mx-auto mt-6 max-w-xl opacity-80">{t("boutiques.sub")}</p>
+          <div className="mt-10">
+            <Link href={"/boutiques" as never} className="btn-primary" style={{ background: "var(--color-ivory)", color: "var(--color-onyx)", borderColor: "var(--color-ivory)" }}>
+              {t("boutiques.title")}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter band */}
+      <section className="page-gutter py-24 md:py-32">
+        <div className="mx-auto max-w-3xl text-center">
+          <FadeIn>
+            <p className="eyebrow">{t("common.newsletter")}</p>
+            <h3 className="font-display mt-5 text-4xl leading-[1.05] md:text-5xl">
+              {t("home.newsletter.title")}
+            </h3>
+            <p className="mx-auto mt-6 max-w-md text-base opacity-80">
+              {t("common.newsletter.copy")}
+            </p>
+            <NewsletterForm />
+          </FadeIn>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function NewsletterForm() {
+  const { t } = useLocale();
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const target = e.currentTarget;
+        const submit = target.querySelector("button");
+        if (submit) submit.textContent = "✓";
+      }}
+      className="mx-auto mt-10 flex max-w-md flex-col items-center gap-3 sm:flex-row"
+    >
+      <input
+        type="email"
+        required
+        placeholder={t("common.email")}
+        aria-label={t("common.email")}
+        className="input-luxe flex-1"
+      />
+      <button type="submit" className="btn-primary">
+        {t("common.signup")}
+      </button>
+    </form>
+  );
+}
