@@ -60,6 +60,9 @@ export const DICTS: Record<Locale, Dict> = {
     "common.signout": "Sign out",
     "common.menu": "Menu",
     "common.close": "Close",
+    "common.whatsapp": "WhatsApp",
+    "common.whatsappAria": "Chat with us on WhatsApp",
+    "common.whatsappPrefill": "Hello, I would like to inquire about MUHRA JEWELRY.",
     "common.allRights": "All rights reserved.",
     "hero.headline": "The Art of Adornment",
     "hero.sub":
@@ -424,6 +427,9 @@ export const DICTS: Record<Locale, Dict> = {
     "common.signout": "Se déconnecter",
     "common.menu": "Menu",
     "common.close": "Fermer",
+    "common.whatsapp": "WhatsApp",
+    "common.whatsappAria": "Écrivez-nous sur WhatsApp",
+    "common.whatsappPrefill": "Bonjour, je souhaite des informations sur MUHRA JEWELRY.",
     "common.allRights": "Tous droits réservés.",
     "hero.headline": "L'Art de la Parure",
     "hero.sub":
@@ -764,6 +770,9 @@ export const DICTS: Record<Locale, Dict> = {
     "common.signout": "Esci",
     "common.menu": "Menu",
     "common.close": "Chiudi",
+    "common.whatsapp": "WhatsApp",
+    "common.whatsappAria": "Scrivici su WhatsApp",
+    "common.whatsappPrefill": "Buongiorno, vorrei informazioni su MUHRA JEWELRY.",
     "common.allRights": "Tutti i diritti riservati.",
     "hero.headline": "L'Arte dell'Ornamento",
     "hero.sub":
@@ -1104,6 +1113,9 @@ export const DICTS: Record<Locale, Dict> = {
     "common.signout": "Cerrar sesión",
     "common.menu": "Menú",
     "common.close": "Cerrar",
+    "common.whatsapp": "WhatsApp",
+    "common.whatsappAria": "Escríbenos por WhatsApp",
+    "common.whatsappPrefill": "Hola, me gustaría información sobre MUHRA JEWELRY.",
     "common.allRights": "Todos los derechos reservados.",
     "hero.headline": "El Arte del Ornamento",
     "hero.sub":
@@ -1444,6 +1456,9 @@ export const DICTS: Record<Locale, Dict> = {
     "common.signout": "تسجيل الخروج",
     "common.menu": "القائمة",
     "common.close": "إغلاق",
+    "common.whatsapp": "واتساب",
+    "common.whatsappAria": "تواصل معنا عبر واتساب",
+    "common.whatsappPrefill": "السلام عليكم، أود الاستفسار عن MUHRA JEWELRY.",
     "common.allRights": "جميع الحقوق محفوظة.",
     "hero.headline": "فنّ الزينة",
     "hero.sub":

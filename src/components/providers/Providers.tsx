@@ -1,5 +1,6 @@
 "use client";
 
+import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
 import { AuthProvider } from "./AuthProvider";
 import { LocaleProvider } from "./LocaleProvider";
 import { StoreProvider } from "./StoreProvider";
@@ -10,7 +11,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider>
       <LocaleProvider>
         <StoreProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            {children}
+            <WhatsAppFab />
+          </AuthProvider>
         </StoreProvider>
       </LocaleProvider>
     </ThemeProvider>
